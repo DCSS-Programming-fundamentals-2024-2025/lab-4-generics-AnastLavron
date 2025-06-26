@@ -1,25 +1,33 @@
 using generics.Interfaces;
 
-class InMemoryRepository<TEntity, TKey> : IRepository<TEntity, TKey>,
-IReadOnlyRepository<TEntity, TKey>, IWriteRepository<TEntity, TKey>
-where TEntity : class, new()
-where TKey : struct
+class InMemoryRepository<TEntity, TKey> : IRepository<TEntity, TKey>, IReadOnlyRepository<TEntity, TKey>, IWriteRepository<TEntity, TKey>
+    where TEntity : class, new()
+    where TKey : struct
 {
-    private Dictionary<TKey, TEntity> Repo = new();
+    private Dictionary<TKey, TEntity> _items = new Dictionary<TKey, TEntity>();
+
+    public void Add(TEntity entity)
+    {
+        var id = (TKey)typeof(TEntity).GetProperty("Id").GetValue(entity);
+        _items[id] = entity;
+    }
     public void Add(TKey id, TEntity entity)
     {
-        Repo.Add(id, entity);
+        _items[id] = entity;
     }
+
     public TEntity Get(TKey id)
     {
-        return Repo[id];
+        return _items[id];
     }
+
     public IEnumerable<TEntity> GetAll()
     {
-        return Repo.Values;
+        return _items.Values;
     }
+
     public void Remove(TKey id)
     {
-        Repo.Remove(id);
+        _items.Remove(id);
     }
 }

@@ -1,12 +1,13 @@
 class Student : Person
 {
-
-    public static void SubmitWork()
+    // private bool _disposed = false;
+    public void SayName()
     {
-
+        Console.WriteLine(Name);
     }
-    public static void SayName()
-    {
 
+    public void SubmitWork()
+    {
+        Console.WriteLine($"{Name} submitted the work");
     }
 }
